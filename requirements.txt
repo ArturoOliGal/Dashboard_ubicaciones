@@ -3,5 +3,6 @@ streamlit
 pandas
 seaborn
 numpy
-potly
+plotly
 matplotlib
+seaborn
