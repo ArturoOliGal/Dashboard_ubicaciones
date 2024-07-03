@@ -125,6 +125,7 @@ with col3:
     Grupos_fuera
 
 st.plotly_chart(fig)
+st.write('Data dimension:'+ str(filtered_DB.shape[0])+ ' rows and '+str(filtered_DB.shape[1])+' columns')
 filtered_DB
 #df
 #mapa
