@@ -36,7 +36,7 @@ Fecha_min=df['Fecha'].min().date()
 Fecha_max=df['Fecha'].max().date()
 Start_date = st.sidebar.date_input('Fecha de inicio', value=Fecha_min, min_value=Fecha_min, max_value=Fecha_max)
 End_date = st.sidebar.date_input('Fecha de fin', value=Fecha_max, min_value=Fecha_min, max_value=Fecha_max)
-filtro_mapa = st.sidebar.selectbox('Filtro para mapa del almacen', ['Todos', 'CAJA','DET','JAUL','BULT','TPCO'])
+filtro_mapa = st.sidebar.selectbox('Filtro para mapa del almacen', ['Todos', 'CAJA','DET','JAUL','BULT','TPCO','FRTE'])
 filtered_DB = df[(df['Fecha'] >= pd.to_datetime(Start_date)) & (df['Fecha'] <= pd.to_datetime(End_date))]
 filtro_por_articulo=st.sidebar.multiselect('Filtro de articulo', filtered_DB['Articulo'].unique())
 filtro_por_nombre_procto=st.sidebar.multiselect('Filtro por producto', filtered_DB['Nombre producto'].unique())
