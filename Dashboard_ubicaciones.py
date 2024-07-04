@@ -47,9 +47,9 @@ filtro_por_articulo=st.sidebar.multiselect('Filtro de articulo', df['Articulo'].
 filtro_por_nombre_procto=st.sidebar.multiselect('Filtro por producto', df['Nombre producto'].unique())
 
 
-if filtro_mapa:
-    filtered_DB=filtered_DB[filtered_DB['Almacen']==filtro_mapa]
-    df=df[df['Almacen']==filtro_mapa]
+#if filtro_mapa:
+#    filtered_DB=filtered_DB[filtered_DB['Almacen']==filtro_mapa]
+#   df=df[df['Almacen']==filtro_mapa]
 
 
 if filtro_por_nombre_procto:
