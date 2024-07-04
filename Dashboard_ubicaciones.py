@@ -36,29 +36,34 @@ Fecha_min=df['Fecha'].min().date()
 Fecha_max=df['Fecha'].max().date()
 Start_date = st.sidebar.date_input('Fecha de inicio', value=Fecha_min, min_value=Fecha_min, max_value=Fecha_max)
 End_date = st.sidebar.date_input('Fecha de fin', value=Fecha_max, min_value=Fecha_min, max_value=Fecha_max)
-filtro_mapa = st.sidebar.selectbox('Filtro para mapa del almacen', ['Todos', 'CAJA','DET','JAUL','BULT','TPCO','FRTE'])
 filtered_DB = df[(df['Fecha'] >= pd.to_datetime(Start_date)) & (df['Fecha'] <= pd.to_datetime(End_date))]
-filtro_por_articulo=st.sidebar.multiselect('Filtro de articulo', filtered_DB['Articulo'].unique())
-filtro_por_nombre_procto=st.sidebar.multiselect('Filtro por producto', filtered_DB['Nombre producto'].unique())
-mapa = pd.DataFrame(filtered_DB[['Ubicacion de articulo', 'Articulo','Nombre producto']])
+mapa = pd.DataFrame(df[['Ubicacion de articulo', 'Articulo','Nombre producto']])
 #mapa['Articulo']=filtered_DB['Articulo']
 mapa[['Almacen', 'Frente', 'Posicion','Nivel','Fondo']] = mapa['Ubicacion de articulo'].str.split('-', expand=True)
 filtered_DB[['Almacen', 'Frente', 'Posicion','Nivel','Fondo']] = df['Ubicacion de articulo'].str.split('-', expand=True)
+df[['Almacen', 'Frente', 'Posicion','Nivel','Fondo']] = df['Ubicacion de articulo'].str.split('-', expand=True)
+filtro_mapa = st.sidebar.multiselect('Filtro del almacen',df['Almacen'].unique())
+filtro_por_articulo=st.sidebar.multiselect('Filtro de articulo', df['Articulo'].unique())
+filtro_por_nombre_procto=st.sidebar.multiselect('Filtro por producto', df['Nombre producto'].unique())
 
 
-if filtro_mapa != 'Todos':
-    mapa = mapa[mapa['Almacen'] == filtro_mapa]
+if filtro_mapa is None:
+    #mapa = mapa[mapa['Almacen'] == filtro_mapa]
     filtered_DB=filtered_DB[filtered_DB['Almacen']==filtro_mapa]
+    df=df[df['Almacen']==filtro_mapa]
 
 
 if filtro_por_nombre_procto:
     mapa = mapa[mapa['Nombre producto'].isin(filtro_por_nombre_procto)]
     filtered_DB = filtered_DB[filtered_DB['Nombre producto'].isin(filtro_por_nombre_procto)]
+    df = df[df['Nombre producto'].isin(filtro_por_nombre_procto)]
+    
 
 
 if filtro_por_articulo:
     mapa = mapa[mapa['Articulo'].isin(filtro_por_articulo)]
     filtered_DB = filtered_DB[filtered_DB['Articulo'].isin(filtro_por_articulo)]
+    df = df[df['Articulo'].isin(filtro_por_articulo)]
 
 #mapa=filtered_DB['Ubicacion de articulo']
 
@@ -82,8 +87,8 @@ fig.update_layout(
 )
 
 
-Grupos = filtered_DB.groupby('Almacen')['VoF'].sum()
-Grupos_fuera=filtered_DB.groupby('Almacen')['VoF Etiquetas'].sum()
+Grupos = df.groupby('Almacen')['VoF'].sum()
+Grupos_fuera=df.groupby('Almacen')['VoF Etiquetas'].sum()
 #Grupos
 
 col1, col2, col3 = st.columns(3)
@@ -125,7 +130,8 @@ with col3:
     Grupos_fuera
 
 st.plotly_chart(fig)
-st.write('Data dimension:'+ str(filtered_DB.shape[0])+ ' rows and '+str(filtered_DB.shape[1])+' columns')
-filtered_DB
-#df
+#st.write('Data dimension:'+ str(filtered_DB.shape[0])+ ' rows and '+str(filtered_DB.shape[1])+' columns')
+#filtered_DB
+#st.write('Data dimension:'+ str(df.shape[0])+ ' rows and '+str(df.shape[1])+' columns')
+df
 #mapa
