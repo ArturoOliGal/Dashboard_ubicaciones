@@ -48,7 +48,6 @@ filtro_por_nombre_procto=st.sidebar.multiselect('Filtro por producto', df['Nombr
 
 
 if filtro_mapa is None:
-    #mapa = mapa[mapa['Almacen'] == filtro_mapa]
     filtered_DB=filtered_DB[filtered_DB['Almacen']==filtro_mapa]
     df=df[df['Almacen']==filtro_mapa]
 
