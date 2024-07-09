@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 
 st.set_page_config(layout='wide')
+
 st.title('Dashboard ubicaciones')
 st.markdown('Pocisiones incorrectas, avance de ubicaciones totales y detallado')
 st.sidebar.header('Filtro de dashboard')
