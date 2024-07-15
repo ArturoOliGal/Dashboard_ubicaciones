@@ -34,11 +34,13 @@ df=load_data()
 DB_SKU=load_dataSKUS()
 df['Fecha'] = pd.to_datetime(df['Fecha'], format='%d-%b-%Y')
 
+df_completo=df
 Fecha_min=df['Fecha'].min().date()
 Fecha_max=df['Fecha'].max().date()
 Start_date = st.sidebar.date_input('Fecha de inicio', value=Fecha_min, min_value=Fecha_min, max_value=Fecha_max)
 End_date = st.sidebar.date_input('Fecha de fin', value=Fecha_max, min_value=Fecha_min, max_value=Fecha_max)
 filtered_DB = df[(df['Fecha'] >= pd.to_datetime(Start_date)) & (df['Fecha'] <= pd.to_datetime(End_date))]
+df = df[(df['Fecha'] <= pd.to_datetime(End_date))]
 mapa = pd.DataFrame(df[['Ubicacion de articulo', 'Articulo','Nombre producto']])
 #mapa['Articulo']=filtered_DB['Articulo']
 mapa[['Almacen', 'Frente', 'Posicion','Nivel','Fondo']] = mapa['Ubicacion de articulo'].str.split('-', expand=True)
@@ -88,8 +90,10 @@ fig.update_layout(
 )
 
 
-Grupos = df.groupby('Almacen')['VoF'].sum()
-Grupos_fuera=df.groupby('Almacen')['VoF Etiquetas'].sum()
+Grupos = df.groupby('Almacen')['VoF'].sum().reset_index()
+Grupos_fuera=df.groupby('Almacen')['VoF Etiquetas'].sum().reset_index()
+#Grupos = Grupos.reset_index()
+#Grupos_fuera=Grupos_fuera.reset_index()
 #Grupos
 
 col1, col2, col3 = st.columns(3)
@@ -101,7 +105,7 @@ with col1:
 with col2:
     st.header('Porcentaje dado de alta')
     posiciones_bien=df['Ubicacion de articulo'].count()
-    posiciones=df['Articulo'].count()
+    posiciones=df_completo['Articulo'].count()
     Porcentaje_posiciones=round(((posiciones_bien/posiciones)*100),2)
     maximo=100
     color_gauge = "#522d6d"
