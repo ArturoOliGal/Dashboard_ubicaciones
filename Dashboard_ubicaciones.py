@@ -104,7 +104,7 @@ with col1:
 
 with col2:
     st.header('Porcentaje dado de alta')
-    posiciones_bien=df['Ubicacion de articulo'].count()
+    posiciones_bien=df_completo['VoF'].sum()
     posiciones=df_completo['Articulo'].count()
     Porcentaje_posiciones=round(((posiciones_bien/posiciones)*100),2)
     maximo=100
